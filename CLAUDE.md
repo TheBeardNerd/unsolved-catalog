@@ -111,8 +111,13 @@ Collective or GitHub Sponsors (needs human).
    most, and only questions that earn their shelf. Equal priority:
    keep existing entries true as the edge moves (editorial law 3),
    and handle corrections from the issues channel.
-2. Open Collective, then a quiet support link in the About money
-   section, replacing the "spend it on a good book" line's promise.
+2. Funding, staged: GitHub Sponsors first (Travis enrolls at
+   github.com/sponsors; then add FUNDING.yml and rewrite the About
+   money section's "good book" line into a quiet support link).
+   Open Source Collective later, once the repo has the ~100 stars
+   their application expects; its public ledger is the endgame.
+   Licensing is done: MIT for code, CC BY 4.0 for entries
+   (LICENSE.md).
 3. Later, maybe: OG images in the stamp style, a SOLVED overstamp
    design for the stamp, a search that respects the catalog feel.
    Keep pages under ~100KB.
