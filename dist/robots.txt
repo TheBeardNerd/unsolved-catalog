@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://unsolvedcatalog.org/feed.xml
+Sitemap: https://unsolvedcatalog.org/sitemap.xml
