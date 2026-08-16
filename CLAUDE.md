@@ -48,7 +48,7 @@ opening paragraph (it takes the drop cap). Teaser: one or two honest
 sentences. Fact-check against current knowledge before writing; where
 a field moves fast, phrase timelessly rather than "as of this year."
 
-Numbering: three digits, zero padded, never reused. Next number: 019.
+Numbering: three digits, zero padded, never reused. Next number: 025.
 
 ## Architecture (deliberately boring)
 
@@ -73,11 +73,13 @@ Numbering: three digits, zero padded, never reused. Next number: 019.
 
 Repo is live and public: TheBeardNerd/unsolved-catalog on GitHub,
 seeded from the founding-session zip and continued in Claude Code.
-18 entries: 001 sleep, 002 dark matter, 003 anesthesia, 004 origin
+24 entries: 001 sleep, 002 dark matter, 003 anesthesia, 004 origin
 of life, 005 slippery ice, 006 P vs NP, 007 bird magnetoreception,
 008 dreams, 009 dark energy, 010 aging, 011 ball lightning, 012
 Riemann hypothesis, 013 coronal heating, 014 Alzheimer's, 015
-turbulence, 016 Fermi paradox, 017 origin of language, 018 hiccups.
+turbulence, 016 Fermi paradox, 017 origin of language, 018 hiccups,
+019 consciousness, 020 placebo, 021 Earth's water, 022 antimatter
+asymmetry, 023 Collatz, 024 zebra stripes.
 Plus About, Solved room, 404, RSS feed, sitemap.xml, favicon,
 robots.txt. Solved-room logic is built: `status: solved` plus a
 `solved: YYYY-MM-DD` frontmatter line retires an entry (off the
@@ -104,15 +106,11 @@ Collective or GitHub Sponsors (needs human).
 
 ## Entry backlog (candidates, unvetted; verify before writing)
 
-Consciousness, physically (Neuroscience). How memories persist
-despite molecular turnover (Neuroscience). How the placebo effect
-works (Medicine). Why humans cry emotional tears (Biology). Why
-yawning is contagious (Biology). Why cats purr (Biology). Why zebras
-have stripes (Biology). What triggered the Cambrian explosion
-(Origins). Where Earth's water came from (Planetary science). Matter
-vs antimatter asymmetry (Physics). High-temperature
-superconductivity (Physics). The glass transition (Physics). Fast
-radio bursts (Astronomy). The Collatz conjecture (Mathematics). Why
+How memories persist despite molecular turnover (Neuroscience). Why
+humans cry emotional tears (Biology). Why yawning is contagious
+(Biology). Why cats purr (Biology). What triggered the Cambrian
+explosion (Origins). High-temperature superconductivity (Physics).
+The glass transition (Physics). Fast radio bursts (Astronomy). Why
 time flows one way (Physics). The black hole information paradox
 (Physics). How many species there are (Biology). Sonoluminescence
 (Physics).
