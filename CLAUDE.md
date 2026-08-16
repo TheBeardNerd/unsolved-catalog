@@ -89,8 +89,8 @@ the source. THE SITE IS LIVE at https://unsolvedcatalog.org as of
 (ALIAS apex to Netlify, CNAME www), HTTPS provisioned, repo linked
 to the Netlify site (unsolvedcatalog, team thebeardnerd), and CI/CD
 verified end to end: a push to main builds via netlify.toml and
-deploys. Not yet done: making main the default branch on GitHub
-(Travis), Open Collective or GitHub Sponsors (needs human).
+deploys. main is the default branch on GitHub. Not yet done: Open
+Collective or GitHub Sponsors (needs human).
 
 ## Roadmap, in order
 
