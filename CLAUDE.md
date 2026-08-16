@@ -87,9 +87,11 @@ Corrections channel is live: About links GitHub issues, footers link
 the source. Domain unsolvedcatalog.org is registered (the SITE
 constant in build.js points at it). Netlify site created
 (unsolvedcatalog, team thebeardnerd) with CI/CD via netlify.toml;
-production branch is main. Not yet done: custom-domain DNS at the
-registrar and the Netlify domain setting (Travis), Open Collective
-or GitHub Sponsors (needs human).
+production branch is main. Not yet done: linking the GitHub repo to
+the Netlify site so pushes actually build (Travis, one click in the
+Netlify UI), custom-domain DNS at the registrar and the Netlify
+domain setting (Travis), making main the default branch on GitHub
+(Travis), Open Collective or GitHub Sponsors (needs human).
 
 ## Roadmap, in order
 
