@@ -10,7 +10,8 @@ const ROOT = __dirname;
 const SITE = "https://unsolvedcatalog.org";
 const REPO = "https://github.com/TheBeardNerd/unsolved-catalog";
 const OUT = path.join(ROOT, "dist");
-const CSS = fs.readFileSync(path.join(ROOT, "src", "style.css"), "utf8").trim();
+const FONTS_CSS = fs.readFileSync(path.join(ROOT, "src", "fonts.css"), "utf8").trim();
+const CSS = FONTS_CSS + "\n" + fs.readFileSync(path.join(ROOT, "src", "style.css"), "utf8").trim();
 
 /* Direction contract: emitted as the first child of <body> on every page. */
 const CONTRACT = `<!--
@@ -82,9 +83,6 @@ function page({ title, desc, url, surface, current, content, ogType = "website" 
 <meta property="og:url" content="${SITE}${url}">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="alternate" type="application/rss+xml" title="UNSOLVED" href="/feed.xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Besley:wght@700;800;900&family=Courier+Prime:wght@400;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,700;1,7..72,400&display=swap" rel="stylesheet">
 <style>
 ${CSS}
 </style>
@@ -117,14 +115,47 @@ ${content}
 
 /* ---------- build ---------- */
 
+/* ---------- validation: the editorial format, machine-checked ----------
+   Any violation fails the build (and therefore the deploy). */
+
+const SECTIONS = ["Why it matters", "What has been tried", "Where the edge is", "What would count as an answer"];
+
+function validateEntry(e, file, problems) {
+  const err = (msg) => problems.push(`${file}: ${msg}`);
+  for (const key of ["number", "slug", "title", "field", "posed", "added", "status", "teaser"])
+    if (!e[key]) err(`missing frontmatter field "${key}"`);
+  if (e.number && !/^\d{3}$/.test(e.number)) err(`number "${e.number}" is not three digits`);
+  if (e.slug && e.number && !e.slug.startsWith(e.number + "-")) err(`slug does not start with "${e.number}-"`);
+  if (e.slug && path.basename(file, ".md") !== e.slug) err(`filename does not match slug "${e.slug}"`);
+  if (e.added && !/^\d{4}-\d{2}-\d{2}$/.test(e.added)) err(`added "${e.added}" is not YYYY-MM-DD`);
+  if (e.status && !["open", "solved"].includes(e.status)) err(`status "${e.status}" is neither open nor solved`);
+  if (e.status === "solved" && !/^\d{4}-\d{2}-\d{2}$/.test(e.solved || "")) err(`solved entry lacks a solved: YYYY-MM-DD date`);
+  const heads = [...e.body.matchAll(/^## (.+)$/gm)].map((m) => m[1].trim());
+  if (heads.join("|") !== SECTIONS.join("|"))
+    err(`sections are [${heads.join(", ")}]; every essay needs exactly [${SECTIONS.join(", ")}] in order`);
+  if (!e.body.trim().split(/\n{2,}/)[0].match(/^[^#>]/)) err(`essay must open with a paragraph before the first section`);
+  const words = e.body.split(/\s+/).filter(Boolean).length;
+  if (words < 250 || words > 600) err(`essay is ${words} words; the shelf standard is roughly 350-450`);
+}
+
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 
-const entries = fs
-  .readdirSync(path.join(ROOT, "entries"))
-  .filter((f) => f.endsWith(".md"))
-  .map((f) => parseEntry(path.join(ROOT, "entries", f)))
+const files = fs.readdirSync(path.join(ROOT, "entries")).filter((f) => f.endsWith(".md"));
+const problems = [];
+const entries = files
+  .map((f) => {
+    const e = parseEntry(path.join(ROOT, "entries", f));
+    validateEntry(e, f, problems);
+    return e;
+  })
   .sort((a, b) => a.number.localeCompare(b.number));
+const dupes = entries.map((e) => e.number).filter((n, i, a) => a.indexOf(n) !== i);
+for (const n of new Set(dupes)) problems.push(`number ${n} is used by more than one entry; numbers are never reused`);
+if (problems.length) {
+  console.error("Catalog validation failed:\n  " + problems.join("\n  "));
+  process.exit(1);
+}
 
 const openEntries = entries.filter((e) => e.status === "open");
 const solvedEntries = entries.filter((e) => e.status === "solved");
@@ -312,6 +343,11 @@ ${[...entries].reverse().map((e) => `<item>
 </item>`).join("\n")}
 </channel></rss>`;
 fs.writeFileSync(path.join(OUT, "feed.xml"), rss);
+
+/* fonts: self-hosted, copied verbatim */
+fs.mkdirSync(path.join(OUT, "fonts"), { recursive: true });
+for (const f of fs.readdirSync(path.join(ROOT, "src", "fonts")))
+  fs.copyFileSync(path.join(ROOT, "src", "fonts", f), path.join(OUT, "fonts", f));
 
 /* favicon: the accession stamp, reduced to a mark */
 fs.writeFileSync(

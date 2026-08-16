@@ -10,8 +10,11 @@ whole institution: the entries, the design, and the build system.
 
 ```
 entries/     one markdown file per question (the content)
-src/         style.css (the entire visual system; see DESIGN.md)
-build.js     zero-dependency static site generator
+src/         style.css (the entire visual system; see DESIGN.md),
+             fonts.css + fonts/ (self-hosted woff2, no third-party requests)
+build.js     zero-dependency static site generator; validates every
+             entry's frontmatter and section structure, failing the
+             build (and the deploy) on any violation
 dist/        generated output; deploy this folder
 DESIGN.md    the visual world, for any future design work
 ```
