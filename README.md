@@ -38,9 +38,11 @@ teaser: One or two honest sentences.
 3. Run `node build.js` (no install step; there are no dependencies).
 4. Deploy `dist/`.
 
-When a question is answered: set `status: solved`, add the story to the entry,
-and the build will move it out of the open holdings. (The solved-room listing
-is the next feature to build.)
+When a question is answered: set `status: solved`, add a `solved: YYYY-MM-DD`
+line to the frontmatter, and rewrite the essay to tell the answer and the
+story of how it was found. The build then retires it: it leaves the index,
+appears in /solved/ with its retired number, and its entry page swaps the
+"leaves only by being answered" line for honors.
 
 ## Deploying
 

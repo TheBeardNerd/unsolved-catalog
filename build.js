@@ -133,10 +133,16 @@ const fmtDate = (iso) =>
     day: "2-digit", month: "short", year: "numeric", timeZone: "UTC",
   }).toUpperCase();
 
+const lastUpdate = entries.map((e) => e.added).sort().at(-1) || "2026-08-16";
+
 /* entry pages */
 for (const e of entries) {
   const url = `/${e.slug}/`;
-  const next = entries[entries.indexOf(e) + 1];
+  const next = e.status === "open" ? openEntries[openEntries.indexOf(e) + 1] : null;
+  const endLine =
+    e.status === "solved"
+      ? `Filed under ${esc(e.field)}. Answered, retired, and kept with honors in <a href="/solved/">the solved room</a>.`
+      : `Filed under ${esc(e.field)}. This entry leaves the catalog only by being answered.`;
   const content = `
 <main class="entry" id="main">
   <article>
@@ -148,12 +154,12 @@ for (const e of entries) {
       <div><dt>Field</dt><dd><b>${esc(e.field)}</b></dd></div>
       <div><dt>First posed</dt><dd><b>${esc(e.posed)}</b></dd></div>
       <div><dt>Added</dt><dd><b>${fmtDate(e.added)}</b></dd></div>
-      <div class="open"><dt>Status</dt><dd><b>${e.status.toUpperCase()}</b></dd></div>
+      <div${e.status === "open" ? ' class="open"' : ""}><dt>Status</dt><dd><b>${e.status.toUpperCase()}${e.status === "solved" && e.solved ? " " + e.solved.slice(0, 4) : ""}</b></dd></div>
     </dl>
     <div class="essay">
 ${md(e.body)}
     </div>
-    <p class="end-matter">Filed under ${esc(e.field)}. This entry leaves the catalog only by being answered.<br>${next ? `Next in the drawer: <a href="/${next.slug}/">Nº ${next.number} · ${esc(next.title)}</a><br>` : ""}<a href="/">Return to the catalog</a></p>
+    <p class="end-matter">${endLine}<br>${next ? `Next in the drawer: <a href="/${next.slug}/">Nº ${next.number} · ${esc(next.title)}</a><br>` : ""}<a href="/">Return to the catalog</a></p>
   </article>
 </main>`;
   fs.mkdirSync(path.join(OUT, e.slug), { recursive: true });
@@ -197,14 +203,38 @@ fs.writeFileSync(
 );
 
 /* solved */
-const solvedContent = `
+const retired = solvedEntries.length
+  ? solvedEntries.map((e) => `Nº ${e.number}`).join(", ")
+  : "none";
+const solvedContent = solvedEntries.length
+  ? `
+<main class="cabinet" id="main">
+  <section class="thesis">
+    <h1>The solved room.</h1>
+    <p>Questions do not get deleted from this catalog. When one is answered, it moves here with full honors: the answer, who found it, and the story of how the edge finally gave way.</p>
+    <p class="holdings">Retired: ${retired} · Last update: ${fmtDate(lastUpdate)}</p>
+  </section>
+  <ul class="drawer">
+${solvedEntries
+  .map(
+    (e) => `    <li><a class="specimen" href="/${e.slug}/">
+      <span class="acc-no">Nº ${e.number}</span>
+      <h2>${esc(e.title)}</h2>
+      <p class="teaser">${esc(e.teaser)}</p>
+      <p class="label-line">${esc(e.field)} · First posed ${esc(e.posed)} · Solved${e.solved ? " " + esc(e.solved.slice(0, 4)) : ""}</p>
+    </a></li>`
+  )
+  .join("\n")}
+  </ul>
+</main>`
+  : `
 <main class="room" id="main">
   <div class="panel">
     <h1>The solved room.</h1>
     <p>Empty, and kept that way on purpose. When a question in this catalog is answered, it does not get deleted. It moves here with full honors: the answer, who found it, and the story of how the edge finally gave way.</p>
     <p>Every empty shelf in this room is a standing invitation to the people working on the questions next door.</p>
     <p><a href="/">Return to the catalog</a></p>
-    <p class="retired">Retired numbers: none · Last update: ${fmtDate("2026-08-16")}</p>
+    <p class="retired">Retired numbers: none · Last update: ${fmtDate(lastUpdate)}</p>
   </div>
 </main>`;
 fs.mkdirSync(path.join(OUT, "solved"), { recursive: true });
@@ -287,6 +317,21 @@ fs.writeFileSync(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="#17251e"/><g transform="rotate(-6 32 32)"><rect x="12" y="14" width="40" height="36" rx="3" fill="none" stroke="#a8321f" stroke-width="4"/><text x="32" y="41" font-family="Georgia, serif" font-weight="bold" font-size="26" fill="#a8321f" text-anchor="middle">?</text></g></svg>`
 );
 
-fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/feed.xml\n`);
+/* sitemap */
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${[
+  { url: "/", lastmod: lastUpdate },
+  { url: "/solved/", lastmod: lastUpdate },
+  { url: "/about/", lastmod: lastUpdate },
+  ...entries.map((e) => ({ url: `/${e.slug}/`, lastmod: e.added })),
+]
+  .map((p) => `<url><loc>${SITE}${p.url}</loc><lastmod>${p.lastmod}</lastmod></url>`)
+  .join("\n")}
+</urlset>
+`;
+fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemap);
+
+fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
 console.log(`Built ${entries.length} entries → dist/ (${openEntries.length} open, ${solvedEntries.length} solved)`);
