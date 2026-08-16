@@ -78,10 +78,12 @@ the founding-session zip and continued in Claude Code. 13 entries:
 hypothesis, 013 coronal heating. Plus About, empty Solved room, 404,
 RSS feed, favicon, robots.txt. Domain decided: unsolvedcatalog.org
 (.ai was taken or too expensive for a zero-revenue institution; the
-SITE constant in build.js already points at the .org). Not yet done:
-registration and first deploy (Travis), Open Collective or GitHub
-Sponsors (needs human), corrections channel (wants the repo public
-first), solved-room listing logic.
+SITE constant in build.js already points at the .org). Corrections
+channel is wired: About links the repo's GitHub issues and the footer
+links the source; Travis still needs to flip the repo to public in
+GitHub settings. Not yet done: registration and first deploy
+(Travis), Open Collective or GitHub Sponsors (needs human),
+solved-room listing logic.
 
 ## Roadmap, in order
 
@@ -90,11 +92,9 @@ first), solved-room listing logic.
 2. Solved-room support in build.js: `status: solved` entries render in
    /solved/ with the answer, who found it, and the story of how, and
    their numbers listed as retired.
-3. Corrections channel: once this repo is public on GitHub, link
-   issues from the About page and update its corrections sentence.
-4. Open Collective, then a quiet support link in the About money
+3. Open Collective, then a quiet support link in the About money
    section, replacing the "spend it on a good book" line's promise.
-5. Later, maybe: sitemap.xml, OG images in the stamp style, a search
+4. Later, maybe: sitemap.xml, OG images in the stamp style, a search
    that respects the catalog feel. Keep pages under ~100KB.
 
 ## Entry backlog (candidates, unvetted; verify before writing)
