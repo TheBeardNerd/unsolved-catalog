@@ -72,6 +72,7 @@ function page({ title, desc, url, surface, current, content, ogType = "website" 
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#17251e">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${SITE}${url}">
@@ -296,9 +297,10 @@ fs.writeFileSync(
 
 /* feed */
 const rss = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"><channel>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
 <title>UNSOLVED</title>
 <link>${SITE}</link>
+<atom:link href="${SITE}/feed.xml" rel="self" type="application/rss+xml"/>
 <description>A catalog of open questions.</description>
 <language>en</language>
 ${[...entries].reverse().map((e) => `<item>
