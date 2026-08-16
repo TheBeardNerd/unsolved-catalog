@@ -48,7 +48,7 @@ opening paragraph (it takes the drop cap). Teaser: one or two honest
 sentences. Fact-check against current knowledge before writing; where
 a field moves fast, phrase timelessly rather than "as of this year."
 
-Numbering: three digits, zero padded, never reused. Next number: 031.
+Numbering: three digits, zero padded, never reused. Next number: 037.
 
 ## Architecture (deliberately boring)
 
@@ -73,7 +73,7 @@ Numbering: three digits, zero padded, never reused. Next number: 031.
 
 Repo is live and public: TheBeardNerd/unsolved-catalog on GitHub,
 seeded from the founding-session zip and continued in Claude Code.
-30 entries: 001 sleep, 002 dark matter, 003 anesthesia, 004 origin
+36 entries: 001 sleep, 002 dark matter, 003 anesthesia, 004 origin
 of life, 005 slippery ice, 006 P vs NP, 007 bird magnetoreception,
 008 dreams, 009 dark energy, 010 aging, 011 ball lightning, 012
 Riemann hypothesis, 013 coronal heating, 014 Alzheimer's, 015
@@ -81,7 +81,9 @@ turbulence, 016 Fermi paradox, 017 origin of language, 018 hiccups,
 019 consciousness, 020 placebo, 021 Earth's water, 022 antimatter
 asymmetry, 023 Collatz, 024 zebra stripes, 025 memory persistence,
 026 Cambrian explosion, 027 fast radio bursts, 028 arrow of time,
-029 high-Tc superconductivity, 030 cat purring.
+029 high-Tc superconductivity, 030 cat purring, 031 emotional
+tears, 032 contagious yawning, 033 glass transition, 034 black hole
+information, 035 species count, 036 sonoluminescence.
 Plus About, Solved room, 404, RSS feed, sitemap.xml, favicon,
 robots.txt. Solved-room logic is built: `status: solved` plus a
 `solved: YYYY-MM-DD` frontmatter line retires an entry (off the
@@ -108,10 +110,15 @@ Collective or GitHub Sponsors (needs human).
 
 ## Entry backlog (candidates, unvetted; verify before writing)
 
-Why humans cry emotional tears (Biology). Why yawning is contagious
-(Biology). The glass transition (Physics). The black hole
-information paradox (Physics). How many species there are (Biology).
-Sonoluminescence (Physics).
+The Hubble tension (Cosmology). How gravity and quantum mechanics
+fit together (Physics). Where ultra-high-energy cosmic rays come
+from (Astrophysics). The proton spin puzzle (Physics). Why humans
+blush (Biology). Why humans have fingerprints (Biology). Why some
+animals regenerate limbs and mammals cannot (Biology). What causes
+migraines (Medicine). What ME/CFS is (Medicine). What causes deja
+vu (Neuroscience). What whale song means (Biology). What killed the
+ice-age megafauna (Origins). Whether the Mpemba effect is real
+(Physics). How rogue waves form (Physics).
 
 ## Working with Travis
 
