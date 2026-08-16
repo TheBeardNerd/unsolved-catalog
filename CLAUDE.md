@@ -84,13 +84,12 @@ robots.txt. Solved-room logic is built: `status: solved` plus a
 index, listed in /solved/ with retired numbers, honors end-matter);
 the room's visual SOLVED overstamp is still future design work.
 Corrections channel is live: About links GitHub issues, footers link
-the source. Domain unsolvedcatalog.org is registered (the SITE
-constant in build.js points at it). Netlify site created
-(unsolvedcatalog, team thebeardnerd) with CI/CD via netlify.toml;
-production branch is main. Not yet done: linking the GitHub repo to
-the Netlify site so pushes actually build (Travis, one click in the
-Netlify UI), custom-domain DNS at the registrar and the Netlify
-domain setting (Travis), making main the default branch on GitHub
+the source. THE SITE IS LIVE at https://unsolvedcatalog.org as of
+2026-08-16, launch day: domain registered at Porkbun, DNS pointed
+(ALIAS apex to Netlify, CNAME www), HTTPS provisioned, repo linked
+to the Netlify site (unsolvedcatalog, team thebeardnerd), and CI/CD
+verified end to end: a push to main builds via netlify.toml and
+deploys. Not yet done: making main the default branch on GitHub
 (Travis), Open Collective or GitHub Sponsors (needs human).
 
 ## Roadmap, in order
