@@ -48,7 +48,7 @@ opening paragraph (it takes the drop cap). Teaser: one or two honest
 sentences. Fact-check against current knowledge before writing; where
 a field moves fast, phrase timelessly rather than "as of this year."
 
-Numbering: three digits, zero padded, never reused. Next number: 008.
+Numbering: three digits, zero padded, never reused. Next number: 014.
 
 ## Architecture (deliberately boring)
 
@@ -68,17 +68,20 @@ Numbering: three digits, zero padded, never reused. Next number: 008.
 - Deploy: dist/ is plain static files. Netlify Drop or
   `npx netlify-cli deploy --prod --dir=dist`.
 
-## Status as of 2026-08-16 (v0.1)
+## Status as of 2026-08-16 (v0.2)
 
-Built and delivered: 7 entries (001 sleep, 002 dark matter, 003
-anesthesia, 004 origin of life, 005 slippery ice, 006 P vs NP, 007
-bird magnetoreception), About, empty Solved room, 404, RSS feed,
-favicon, robots.txt. Domain decided: unsolvedcatalog.org
+Repo is live: TheBeardNerd/unsolved-catalog on GitHub, seeded from
+the founding-session zip and continued in Claude Code. 13 entries:
+001 sleep, 002 dark matter, 003 anesthesia, 004 origin of life,
+005 slippery ice, 006 P vs NP, 007 bird magnetoreception, 008 dreams,
+009 dark energy, 010 aging, 011 ball lightning, 012 Riemann
+hypothesis, 013 coronal heating. Plus About, empty Solved room, 404,
+RSS feed, favicon, robots.txt. Domain decided: unsolvedcatalog.org
 (.ai was taken or too expensive for a zero-revenue institution; the
 SITE constant in build.js already points at the .org). Not yet done:
-registration and first deploy (Travis), GitHub repo (Travis), Open
-Collective or GitHub Sponsors (needs human), corrections channel,
-solved-room listing logic.
+registration and first deploy (Travis), Open Collective or GitHub
+Sponsors (needs human), corrections channel (wants the repo public
+first), solved-room listing logic.
 
 ## Roadmap, in order
 
@@ -96,22 +99,20 @@ solved-room listing logic.
 
 ## Entry backlog (candidates, unvetted; verify before writing)
 
-Consciousness, physically (Neuroscience). Why we dream (Neuroscience).
-How memories persist despite molecular turnover (Neuroscience). What
-causes Alzheimer's (Medicine). Why we age (Biology). How the placebo
-effect works (Medicine). Why humans cry emotional tears (Biology).
-Why yawning is contagious (Biology). Why cats purr (Biology). Why
-zebras have stripes (Biology). What triggered the Cambrian explosion
-(Origins). Where Earth's water came from (Planetary science). The
-Fermi paradox (Astronomy). Dark energy (Cosmology). Matter vs
-antimatter asymmetry (Physics). Why the Sun's corona is hotter than
-its surface (Astrophysics). Ball lightning (Physics). Turbulence
-(Physics). High-temperature superconductivity (Physics). The glass
-transition (Physics). Fast radio bursts (Astronomy). The Riemann
-hypothesis (Mathematics). The Collatz conjecture (Mathematics). How
-language began (Linguistics). Why time flows one way (Physics). The
-black hole information paradox (Physics). Why we hiccup (Biology).
-How many species there are (Biology). Sonoluminescence (Physics).
+Consciousness, physically (Neuroscience). How memories persist
+despite molecular turnover (Neuroscience). What causes Alzheimer's
+(Medicine). How the placebo effect works (Medicine). Why humans cry
+emotional tears (Biology). Why yawning is contagious (Biology). Why
+cats purr (Biology). Why zebras have stripes (Biology). What
+triggered the Cambrian explosion (Origins). Where Earth's water came
+from (Planetary science). The Fermi paradox (Astronomy). Matter vs
+antimatter asymmetry (Physics). Turbulence (Physics).
+High-temperature superconductivity (Physics). The glass transition
+(Physics). Fast radio bursts (Astronomy). The Collatz conjecture
+(Mathematics). How language began (Linguistics). Why time flows one
+way (Physics). The black hole information paradox (Physics). Why we
+hiccup (Biology). How many species there are (Biology).
+Sonoluminescence (Physics).
 
 ## Working with Travis
 
