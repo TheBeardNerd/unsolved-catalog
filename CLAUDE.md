@@ -48,7 +48,7 @@ opening paragraph (it takes the drop cap). Teaser: one or two honest
 sentences. Fact-check against current knowledge before writing; where
 a field moves fast, phrase timelessly rather than "as of this year."
 
-Numbering: three digits, zero padded, never reused. Next number: 043.
+Numbering: three digits, zero padded, never reused. Next number: 051.
 
 ## Architecture (deliberately boring)
 
@@ -69,23 +69,27 @@ Numbering: three digits, zero padded, never reused. Next number: 043.
   (node build.js, publish dist/) and deploys. dist/ is gitignored.
   Site: unsolvedcatalog on team thebeardnerd, unsolvedcatalog.netlify.app.
 
-## Status as of 2026-08-16 (v0.3)
+## Status as of 2026-08-16 (v1.0, opening collection complete)
 
 Repo is live and public: TheBeardNerd/unsolved-catalog on GitHub,
 seeded from the founding-session zip and continued in Claude Code.
-42 entries: 001 sleep, 002 dark matter, 003 anesthesia, 004 origin
-of life, 005 slippery ice, 006 P vs NP, 007 bird magnetoreception,
-008 dreams, 009 dark energy, 010 aging, 011 ball lightning, 012
-Riemann hypothesis, 013 coronal heating, 014 Alzheimer's, 015
-turbulence, 016 Fermi paradox, 017 origin of language, 018 hiccups,
-019 consciousness, 020 placebo, 021 Earth's water, 022 antimatter
-asymmetry, 023 Collatz, 024 zebra stripes, 025 memory persistence,
-026 Cambrian explosion, 027 fast radio bursts, 028 arrow of time,
-029 high-Tc superconductivity, 030 cat purring, 031 emotional
-tears, 032 contagious yawning, 033 glass transition, 034 black hole
-information, 035 species count, 036 sonoluminescence, 037 Hubble
-tension, 038 migraines, 039 limb regeneration, 040 deja vu, 041
-rogue waves, 042 ultra-high-energy cosmic rays.
+THE OPENING COLLECTION OF 50 IS COMPLETE, all written and shipped
+on launch day: 001 sleep, 002 dark matter, 003 anesthesia, 004
+origin of life, 005 slippery ice, 006 P vs NP, 007 bird
+magnetoreception, 008 dreams, 009 dark energy, 010 aging, 011 ball
+lightning, 012 Riemann hypothesis, 013 coronal heating, 014
+Alzheimer's, 015 turbulence, 016 Fermi paradox, 017 origin of
+language, 018 hiccups, 019 consciousness, 020 placebo, 021 Earth's
+water, 022 antimatter asymmetry, 023 Collatz, 024 zebra stripes,
+025 memory persistence, 026 Cambrian explosion, 027 fast radio
+bursts, 028 arrow of time, 029 high-Tc superconductivity, 030 cat
+purring, 031 emotional tears, 032 contagious yawning, 033 glass
+transition, 034 black hole information, 035 species count, 036
+sonoluminescence, 037 Hubble tension, 038 migraines, 039 limb
+regeneration, 040 deja vu, 041 rogue waves, 042 ultra-high-energy
+cosmic rays, 043 blushing, 044 proton spin, 045 ME/CFS, 046 whale
+song, 047 megafauna extinction, 048 fingerprints, 049 Mpemba
+effect, 050 quantum gravity.
 Plus About, Solved room, 404, RSS feed, sitemap.xml, favicon,
 robots.txt. Solved-room logic is built: `status: solved` plus a
 `solved: YYYY-MM-DD` frontmatter line retires an entry (off the
@@ -102,8 +106,11 @@ Collective or GitHub Sponsors (needs human).
 
 ## Roadmap, in order
 
-1. Grow the catalog to 50 entries for the full opening collection.
-   Write in batches of 5-8 per session; quality over pace.
+1. Curate and maintain. The opening collection of 50 is complete;
+   growth is now slow and deliberate, a few entries per session at
+   most, and only questions that earn their shelf. Equal priority:
+   keep existing entries true as the edge moves (editorial law 3),
+   and handle corrections from the issues channel.
 2. Open Collective, then a quiet support link in the About money
    section, replacing the "spend it on a good book" line's promise.
 3. Later, maybe: OG images in the stamp style, a SOLVED overstamp
@@ -112,11 +119,12 @@ Collective or GitHub Sponsors (needs human).
 
 ## Entry backlog (candidates, unvetted; verify before writing)
 
-How gravity and quantum mechanics fit together (Physics). The
-proton spin puzzle (Physics). Why humans blush (Biology). Why
-humans have fingerprints (Biology). What ME/CFS is (Medicine). What
-whale song means (Biology). What killed the ice-age megafauna
-(Origins). Whether the Mpemba effect is real (Physics).
+The strong CP problem (Physics). How lightning gets started in
+clouds (Atmospheric science). Where European eels actually spawn
+(Biology). What causes Parkinson's disease (Medicine). What causes
+hangovers (Medicine). Why humans are the hairless ape (Biology).
+Why the Moon's two faces differ so much (Planetary science). What
+chronic itch is for (Neuroscience).
 
 ## Working with Travis
 
