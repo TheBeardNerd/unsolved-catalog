@@ -46,9 +46,11 @@ appears in /solved/ with its retired number, and its entry page swaps the
 
 ## Deploying
 
-`dist/` is plain static files. Netlify: drag the `dist` folder onto
-https://app.netlify.com/drop, or `npx netlify-cli deploy --prod --dir=dist`.
-Set the 404 page to `/404.html` (Netlify picks it up automatically).
+Deploys are continuous: a push to `main` triggers Netlify, which runs
+`node build.js` (see netlify.toml) and publishes `dist/`. The dist folder
+is generated output and is not committed. Manual fallback, should CI ever
+be down: build locally and `npx netlify-cli deploy --prod --dir=dist`.
+Netlify picks up `dist/404.html` automatically.
 
 ## Maintenance model
 

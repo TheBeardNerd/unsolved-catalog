@@ -1,0 +1,7 @@
+# UNSOLVED · Netlify CI/CD
+# A push to main builds the site from source and deploys dist/.
+# The build has zero dependencies; node is all it needs.
+
+[build]
+  command = "node build.js"
+  publish = "dist"

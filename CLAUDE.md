@@ -65,8 +65,9 @@ Numbering: three digits, zero padded, never reused. Next number: 019.
   never as text on green).
 - Every built page carries a direction-contract HTML comment as the
   first child of body. build.js injects it. Keep it intact.
-- Deploy: dist/ is plain static files. Netlify Drop or
-  `npx netlify-cli deploy --prod --dir=dist`.
+- Deploy: push to main. Netlify builds from source via netlify.toml
+  (node build.js, publish dist/) and deploys. dist/ is gitignored.
+  Site: unsolvedcatalog on team thebeardnerd, unsolvedcatalog.netlify.app.
 
 ## Status as of 2026-08-16 (v0.3)
 
@@ -83,9 +84,12 @@ robots.txt. Solved-room logic is built: `status: solved` plus a
 index, listed in /solved/ with retired numbers, honors end-matter);
 the room's visual SOLVED overstamp is still future design work.
 Corrections channel is live: About links GitHub issues, footers link
-the source. Domain decided: unsolvedcatalog.org (the SITE constant in
-build.js points at it). Not yet done: registration and first deploy
-(Travis), Open Collective or GitHub Sponsors (needs human).
+the source. Domain unsolvedcatalog.org is registered (the SITE
+constant in build.js points at it). Netlify site created
+(unsolvedcatalog, team thebeardnerd) with CI/CD via netlify.toml;
+production branch is main. Not yet done: custom-domain DNS at the
+registrar and the Netlify domain setting (Travis), Open Collective
+or GitHub Sponsors (needs human).
 
 ## Roadmap, in order
 
