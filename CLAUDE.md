@@ -48,7 +48,7 @@ opening paragraph (it takes the drop cap). Teaser: one or two honest
 sentences. Fact-check against current knowledge before writing; where
 a field moves fast, phrase timelessly rather than "as of this year."
 
-Numbering: three digits, zero padded, never reused. Next number: 051.
+Numbering: three digits, zero padded, never reused. Next number: 054.
 
 ## Architecture (deliberately boring)
 
@@ -104,6 +104,13 @@ verified end to end: a push to main builds via netlify.toml and
 deploys. main is the default branch on GitHub. Not yet done: Open
 Collective or GitHub Sponsors (needs human).
 
+Post-launch session, same day: entries 051 (European eel
+spawning), 052 (lightning initiation), 053 (lunar dichotomy)
+written from fresh fact-check research; RSS grew its atom
+self-link and pages a theme-color meta. Issues channel checked:
+empty. Work pushed on branch
+claude/unsolved-catalog-improvements-x6s07p for review into main.
+
 ## Roadmap, in order
 
 1. Curate and maintain. The opening collection of 50 is complete;
@@ -124,12 +131,9 @@ Collective or GitHub Sponsors (needs human).
 
 ## Entry backlog (candidates, unvetted; verify before writing)
 
-The strong CP problem (Physics). How lightning gets started in
-clouds (Atmospheric science). Where European eels actually spawn
-(Biology). What causes Parkinson's disease (Medicine). What causes
-hangovers (Medicine). Why humans are the hairless ape (Biology).
-Why the Moon's two faces differ so much (Planetary science). What
-chronic itch is for (Neuroscience).
+The strong CP problem (Physics). What causes Parkinson's disease
+(Medicine). What causes hangovers (Medicine). Why humans are the
+hairless ape (Biology). What chronic itch is for (Neuroscience).
 
 ## Working with Travis
 
