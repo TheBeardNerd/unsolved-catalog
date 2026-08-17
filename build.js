@@ -212,11 +212,19 @@ for (const e of entries) {
     e.status === "solved"
       ? `Filed under ${esc(e.field)}.${revised} Answered, retired, and kept with honors in <a href="/solved/">the solved room</a>.`
       : `Filed under ${esc(e.field)}.${revised} This entry leaves the catalog only by being answered.`;
+  /* The stamp: an open entry is struck once. A solved entry keeps its
+     original stamp (the card's history) and gets SOLVED struck across it
+     at an opposing angle, the way a real accession label is cancelled.
+     The superseded OPEN stays visible but is hidden from screen readers. */
+  const stamp =
+    e.status === "solved"
+      ? `<p class="stamp is-solved">UNSOLVED<span class="no">Nº ${e.number}</span><span aria-hidden="true">OPEN</span><span class="over">SOLVED</span></p>`
+      : `<p class="stamp">UNSOLVED<span class="no">Nº ${e.number}</span>OPEN</p>`;
   const content = `
 <main class="entry" id="main">
   <article>
     <div class="entry-head">
-      <p class="stamp">UNSOLVED<span class="no">Nº ${e.number}</span>${e.status.toUpperCase()}</p>
+      ${stamp}
       <h1>${esc(e.title)}</h1>
     </div>
     <dl class="ledger">
@@ -228,7 +236,7 @@ for (const e of entries) {
     <div class="essay">
 ${md(e.body)}
     </div>
-    <p class="end-matter">${endLine}<br>${next ? `Next in the drawer: <a href="/${next.slug}/">Nº ${next.number} · ${esc(next.title)}</a><br>` : ""}${prev ? `Previous in the drawer: <a href="/${prev.slug}/">Nº ${prev.number} · ${esc(prev.title)}</a><br>` : ""}<a href="/">Return to the catalog</a></p>
+    <p class="end-matter">${endLine}<br>${next ? `Next in the drawer: <a href="/${next.slug}/">Nº ${next.number} · ${esc(next.title)}</a><br>` : ""}${prev ? `Previous in the drawer: <a href="/${prev.slug}/">Nº ${prev.number} · ${esc(prev.title)}</a><br>` : ""}<a href="${e.status === "open" ? `/#n-${e.number}` : "/"}">Return to the catalog</a></p>
   </article>
 </main>`;
   fs.mkdirSync(path.join(OUT, e.slug), { recursive: true });
@@ -241,7 +249,7 @@ ${md(e.body)}
 /* index */
 const cards = openEntries
   .map(
-    (e) => `    <li data-field="${fieldSlug(e.field)}"><a class="specimen" href="/${e.slug}/">
+    (e) => `    <li data-field="${fieldSlug(e.field)}" id="n-${e.number}"><a class="specimen" href="/${e.slug}/">
       <span class="acc-no">Nº ${e.number}</span>
       <h2>${esc(e.title)}</h2>
       <p class="teaser">${esc(e.teaser)}</p>

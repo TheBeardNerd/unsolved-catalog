@@ -192,6 +192,28 @@ pages (content is ivory card, the Cabinet Rule), per-field index
 pages (would dilute cosmic-beside-small; dividers narrow without
 reordering), and any JS-based search (CSP still allows no scripts).
 
+Second UI/UX session, 2026-08-17, branch
+claude/unsolved-catalog-ui-ux-cc46nd: four refinements, all
+CSS/HTML. The SOLVED overstamp is designed and built (roadmap item
+3): a solved entry keeps its original stamp and gets SOLVED struck
+across the lower edge at an opposing angle, ivory-faced so it
+obliterates the OPEN it cancels while the citeable No stays
+legible; the cancelled OPEN is aria-hidden; the whole stamp still
+settles once. Verified by rendering a temporarily solved entry in
+a headless browser (not committed). The drawer now remembers your
+place: index cards carry id="n-NNN" anchors, an open entry's
+"Return to the catalog" links back to its own card, and the
+returned-to card is marked with a quiet brass hairline (focus ring
+outranks it; scroll-margin gives it air). Specimen cards lift on
+keyboard focus like hover (reduced-motion still gets none). Cards
+and panels gain a 1px CanvasText border in forced-colors mode,
+where the shadow-borne edges are stripped. DESIGN.md updated
+(stamp spec, specimen card, browser surfaces). Considered and
+skipped: animating the overstamp as a second strike (DESIGN.md
+allows one motion moment), a :target highlight animation (same),
+and tap-highlight suppression (reduced-motion users would lose
+their only tap feedback).
+
 ## Roadmap, in order
 
 1. Curate and maintain. The opening collection of 50 is complete;
@@ -206,9 +228,9 @@ reordering), and any JS-based search (CSP still allows no scripts).
    their application expects; its public ledger is the endgame.
    Licensing is done: MIT for code, CC BY 4.0 for entries
    (LICENSE.md).
-3. Later, maybe: OG images in the stamp style, a SOLVED overstamp
-   design for the stamp, a search that respects the catalog feel.
-   Keep pages under ~100KB.
+3. Later, maybe: OG images in the stamp style, a search that
+   respects the catalog feel. Keep pages under ~100KB. (The SOLVED
+   overstamp is done, 2026-08-17.)
 
 ## Entry backlog (candidates, unvetted; verify before writing)
 

@@ -106,13 +106,15 @@ Corners are 3px everywhere a shape has them: cards, panels, the stamp border. Ru
 ## Components
 
 ### Specimen card (index)
-An ivory card that is one whole link: accession number (Besley 700, carmine), question (Besley 700, balanced), teaser (faded ink), and a typed label line above a top ledger rule. Hover lifts it 3px with the deeper shadow; reduced-motion gets no transform.
+An ivory card that is one whole link: accession number (Besley 700, carmine), question (Besley 700, balanced), teaser (faded ink), and a typed label line above a top ledger rule. Hover and keyboard focus lift it 3px with the deeper shadow; reduced-motion gets no transform. An entry's "Return to the catalog" link targets the card's own anchor, and the returned-to card is marked with a brass hairline outline at 5px offset (the spot the card was pulled from); a focus ring outranks the marker.
 
 ### Drawer dividers (index)
 The subject tabs of a card catalog: a fieldset of hidden radios styled as typed Courier labels in sage with tabular counts, the checked divider brass and underlined like the nav, in a row under the holdings line. Selecting one narrows the drawer to that field, pure CSS via `:has()`. Browsers without `:has()` never see the row; print always shows the whole drawer. The default divider is All: the mixed drawer, cosmic beside small, stays the front door.
 
 ### Accession stamp (signature)
-The identity mark. Carmine bordered block, Besley caps + Courier number, rotated -2.5deg, floated top-right of every entry head with the title wrapping beneath it (in source it precedes the h1, so the card reads stamp-first, as a real specimen card does). It settles into place once on load (0.45s, ease `cubic-bezier(0.16,1,0.3,1)`, from +1.5deg and 114% scale), the site's single authored motion moment; reduced-motion renders it static. A future SOLVED state overstamps it.
+The identity mark. Carmine bordered block, Besley caps + Courier number, rotated -2.5deg, floated top-right of every entry head with the title wrapping beneath it (in source it precedes the h1, so the card reads stamp-first, as a real specimen card does). It settles into place once on load (0.45s, ease `cubic-bezier(0.16,1,0.3,1)`, from +1.5deg and 114% scale), the site's single authored motion moment; reduced-motion renders it static.
+
+The SOLVED state overstamps it: the original stamp is kept (a card's history is part of the card) and a second impression is struck across its lower edge at an opposing angle (+6deg against the stamp's -2.5deg), wider than the stamp so it crosses both borders. Same carmine, same flat 2px-border grammar, ivory face, the word SOLVED at 0.92rem tracked 0.24em. It obliterates the OPEN line it cancels while UNSOLVED and the citeable Nº stay legible above it. The cancelled OPEN is aria-hidden; the overstamp rides inside the stamp so the single settle covers both impressions, never a second moment.
 
 ### Ledger
 A dl of typed metadata (Field, First posed, Catalogued, Status) between two card rules; values bold ink, OPEN in carmine.
@@ -121,7 +123,7 @@ A dl of typed metadata (Field, First posed, Catalogued, Status) between two card
 Courier caps in brass on the green bar, 0.55rem vertical padding for tap targets, current page underlined in brass.
 
 ### Browser surfaces
-Selection is carmine with ivory text; caret carmine; scrollbar brass-on-deep-green; focus rings 2px, brass on green surfaces and carmine on ivory.
+Selection is carmine with ivory text; caret carmine; scrollbar brass-on-deep-green; focus rings 2px, brass on green surfaces and carmine on ivory. In forced-colors mode (card depth lives in shadows, which it strips) specimen cards and panels gain a 1px CanvasText border so the drawer keeps its structure.
 
 ## Do's and Don'ts
 
