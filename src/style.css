@@ -38,6 +38,7 @@ body {
 }
 
 ::selection { background: var(--stamp); color: var(--card); }
+::target-text { background: var(--stamp); color: var(--card); }
 
 :focus-visible {
   outline: 2px solid var(--brass);
@@ -246,6 +247,24 @@ body {
   color: var(--on-case-soft);
 }
 
+/* On screens wide enough that it stays a slim rail, the divider row
+   rides along: stuck to the top of the case while the drawer scrolls,
+   so the drawer can be narrowed from anywhere in it. Its own hairline
+   is the edge; no new shadow. Cards returned to by anchor get extra
+   scroll-margin so they land clear of the rail. */
+@media (min-width: 40rem) {
+  @supports selector(body:has(a)) {
+    .dividers {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--case);
+      padding-top: 0.5rem;
+    }
+    .drawer li { scroll-margin-top: 6rem; }
+  }
+}
+
 .drawer {
   list-style: none;
   margin: 0;
@@ -305,6 +324,26 @@ body {
   line-height: 1.6;
   text-wrap: pretty;
 }
+/* The drawer's back panel: a quiet floor to the long scroll. "#top" is
+   the fragment browsers reserve for the top of the page; no anchor
+   element is needed. */
+.drawer-end {
+  margin: 2.4rem 0 0;
+  font-family: "Courier Prime", "Courier New", monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-case-soft);
+}
+.drawer-end a {
+  color: var(--brass);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  display: inline-block;
+  padding: 0.45rem 0;
+}
+.drawer-end a:hover { color: var(--on-case); }
+
 .label-line {
   font-family: "Courier Prime", "Courier New", monospace;
   font-variant-numeric: tabular-nums;
@@ -460,6 +499,7 @@ body {
   color: var(--ink-soft);
   line-height: 1.9;
 }
+.end-matter p { margin: 0 0 0.55rem; }
 .end-matter a {
   color: var(--stamp);
   text-underline-offset: 0.18em;
@@ -502,6 +542,10 @@ body {
 .room .panel a:hover { text-decoration-thickness: 2px; }
 .room ol { margin: 0 0 1.1rem; padding-left: 1.3rem; max-width: 62ch; }
 .room li { margin-bottom: 0.5rem; }
+.room li::marker {
+  font-family: "Courier Prime", "Courier New", monospace;
+  color: var(--ink-soft);
+}
 
 .retired {
   font-family: "Courier Prime", "Courier New", monospace;
@@ -519,6 +563,18 @@ body {
   .ledger { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .room .panel { padding: 2.4rem 2.2rem 2rem; }
   .specimen { padding: 1.4rem 1.6rem 1.2rem; }
+}
+
+/* More-contrast preference: the palette holds, but its quiet end firms
+   up. Faded inks darken (or brighten, on green) and hairlines press
+   harder; carmine, brass, and the surfaces stay exactly themselves. */
+@media (prefers-contrast: more) {
+  :root {
+    --ink-soft: #4a4130;
+    --on-case-soft: #c2cec3;
+    --rule-card: rgba(34, 29, 19, 0.42);
+    --rule-case: rgba(198, 165, 92, 0.55);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -545,7 +601,10 @@ body {
     --rule-case: rgba(0, 0, 0, 0.3);
     --rule-card: rgba(0, 0, 0, 0.3);
   }
-  .case-head, .case-foot, .skip, .dividers { display: none; }
+  /* A printed entry is the card itself: keep the stamp, the ledger, and
+     the cite line; drop the screen furniture (site chrome, drawer
+     navigation). */
+  .case-head, .case-foot, .skip, .dividers, .drawer-end, .pull-nav { display: none; }
   .specimen, .room .panel { box-shadow: none; border: 1px solid var(--rule-card); }
   .stamp { animation: none; }
 }

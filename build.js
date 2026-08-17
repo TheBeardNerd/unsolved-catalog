@@ -236,7 +236,10 @@ for (const e of entries) {
     <div class="essay">
 ${md(e.body)}
     </div>
-    <p class="end-matter">${endLine}<br>${next ? `Next in the drawer: <a href="/${next.slug}/">Nº ${next.number} · ${esc(next.title)}</a><br>` : ""}${prev ? `Previous in the drawer: <a href="/${prev.slug}/">Nº ${prev.number} · ${esc(prev.title)}</a><br>` : ""}<a href="${e.status === "open" ? `/#n-${e.number}` : "/"}">Return to the catalog</a></p>
+    <footer class="end-matter">
+      <p>${endLine}<br>Cite this card: <a href="/${e.number}">unsolvedcatalog.org/${e.number}</a></p>
+      <p class="pull-nav">${next ? `Next in the drawer: <a href="/${next.slug}/">Nº ${next.number} · ${esc(next.title)}</a><br>` : ""}${prev ? `Previous in the drawer: <a href="/${prev.slug}/">Nº ${prev.number} · ${esc(prev.title)}</a><br>` : ""}<a href="${e.status === "open" ? `/#n-${e.number}` : "/"}">Return to the catalog</a></p>
+    </footer>
   </article>
 </main>`;
   fs.mkdirSync(path.join(OUT, e.slug), { recursive: true });
@@ -290,6 +293,7 @@ ${dividers}
   <ul class="drawer">
 ${cards}
   </ul>
+  <p class="drawer-end">End of the drawer · <a href="#top">Back to the top</a></p>
 </main>`;
 
 fs.writeFileSync(
