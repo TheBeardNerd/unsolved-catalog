@@ -72,7 +72,9 @@ no hype, no ads, no tracking.
 The opening collection of 50 shipped on launch day; growth since is slow
 and deliberate. Every push runs the build in GitHub Actions (see
 .github/workflows/build.yml), so a malformed entry, a broken internal
-link, or an overweight page fails CI before it can reach main.
+link, or an overweight page fails CI before it can reach main. CI also
+builds twice and diffs the output: the site is a pure function of the
+repo, byte for byte, and stays that way.
 
 Two stable addresses worth knowing: every entry has a permanent short
 URL at its accession number (`/005` redirects to the full entry, via a

@@ -13,7 +13,19 @@
     Content-Security-Policy = "default-src 'none'; style-src 'unsafe-inline'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "no-referrer"
-    Strict-Transport-Security = "max-age=31536000"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# The catalog-as-data endpoints are offered for reuse; let other origins
+# actually fetch them from a browser.
+[[headers]]
+  for = "/catalog.json"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/feed.xml"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
 
 # Font files never change without changing name; cache them for good.
 [[headers]]
