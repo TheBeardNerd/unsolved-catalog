@@ -219,6 +219,32 @@ baseline row or drops below it whole, flush left, with edge tap
 padding cancelled so link text aligns with the measure. Verified
 at 320/360/390/640/1280.
 
+Third UI/UX session, 2026-08-17, branch
+claude/unsolved-catalog-ui-ux-l37m2p: five refinements, all
+CSS/HTML inside the constitution. The divider row is sticky at
+40rem and up (case fill, its own hairline as the edge, no new
+shadow), so the drawer can be re-narrowed from anywhere in the
+53-card scroll; anchored cards carry extra scroll-margin to land
+clear of it, and phones keep the row in flow so wrapped rows
+never eat the viewport. The index gained a typed end-of-drawer
+line, the drawer's back panel: "End of the drawer" plus a
+back-to-top link via the reserved #top fragment. Entry end matter
+is now a footer of three typed lines and gained "Cite this card:
+unsolvedcatalog.org/NNN", surfacing the number permalink on the
+card itself (About was previously its only mention). Print pass:
+drawer navigation and the end-of-drawer line drop away in print,
+so a printed entry is the clean card. Browser-surface batch:
+::target-text takes the selection treatment (carmine on ivory),
+About's rules list markers are typed Courier in faded ink, and
+prefers-contrast: more deepens the faded inks and hairlines while
+carmine, brass, and both surfaces stay exactly themselves.
+DESIGN.md updated (layout, drawer dividers, browser surfaces).
+Considered and skipped: sticky dividers on phones (the wrapped
+rows would eat the viewport), a card count in the end-of-drawer
+line (it would read wrong under an active filter), and a
+pull-a-random-card link (needs JS or a server; the CSP allows
+neither).
+
 ## Roadmap, in order
 
 1. Curate and maintain. The opening collection of 50 is complete;
