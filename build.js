@@ -65,7 +65,7 @@ function parseEntry(file) {
 
 /* ---------- page shell ---------- */
 
-function page({ title, desc, url, surface, current, content, ogType = "website" }) {
+function page({ title, desc, url, surface, current, content, ogType = "website", published }) {
   const navLink = (href, label) =>
     `<a href="${href}"${current === label ? ' aria-current="page"' : ""}>${label}</a>`;
   return `<!doctype html>
@@ -81,6 +81,8 @@ function page({ title, desc, url, surface, current, content, ogType = "website" 
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:type" content="${ogType}">
 <meta property="og:url" content="${SITE}${url}">
+<meta property="og:site_name" content="UNSOLVED">${published ? `\n<meta property="article:published_time" content="${published}">` : ""}
+<meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="alternate" type="application/rss+xml" title="UNSOLVED" href="/feed.xml">
 <style>
@@ -197,7 +199,7 @@ ${md(e.body)}
   fs.mkdirSync(path.join(OUT, e.slug), { recursive: true });
   fs.writeFileSync(
     path.join(OUT, e.slug, "index.html"),
-    page({ title: `${e.title} · UNSOLVED`, desc: e.teaser, url, surface: "card", current: null, content, ogType: "article" })
+    page({ title: `${e.title} · UNSOLVED`, desc: e.teaser, url, surface: "card", current: null, content, ogType: "article", published: e.added })
   );
 }
 
@@ -326,9 +328,12 @@ fs.writeFileSync(
   page({ title: "Not found · UNSOLVED", desc: "This page is not in the catalog.", url: "/404.html", surface: "case", current: null, content: nfContent })
 );
 
-/* feed */
+/* feed: teaser as description, full essay as content:encoded, so feed
+   readers can show the whole entry without ever touching the site */
+const feedHtml = (e) =>
+  md(e.body).replace(/href="\//g, `href="${SITE}/`).replace(/\]\]>/g, "]]]]><![CDATA[>");
 const rss = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>
 <title>UNSOLVED</title>
 <link>${SITE}</link>
 <atom:link href="${SITE}/feed.xml" rel="self" type="application/rss+xml"/>
@@ -340,6 +345,7 @@ ${[...entries].reverse().map((e) => `<item>
 <guid>${SITE}/${e.slug}/</guid>
 <pubDate>${new Date(e.added + "T12:00:00Z").toUTCString()}</pubDate>
 <description>${esc(e.teaser)}</description>
+<content:encoded><![CDATA[${feedHtml(e)}]]></content:encoded>
 </item>`).join("\n")}
 </channel></rss>`;
 fs.writeFileSync(path.join(OUT, "feed.xml"), rss);
@@ -371,5 +377,34 @@ ${[
 fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemap);
 
 fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
+
+/* ---------- post-build checks: links resolve, pages stay light ----------
+   Every internal href in the built site must point at a built file, and
+   no page may cross the 100KB line. Violations fail the build. */
+
+const postProblems = [];
+const htmlFiles = [];
+(function walk(dir) {
+  for (const f of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, f.name);
+    if (f.isDirectory()) walk(p);
+    else if (f.name.endsWith(".html")) htmlFiles.push(p);
+  }
+})(OUT);
+for (const file of htmlFiles) {
+  const html = fs.readFileSync(file, "utf8");
+  const rel = path.relative(OUT, file);
+  for (const m of html.matchAll(/href="(\/[^"#?]*)/g)) {
+    const target = m[1].endsWith("/") ? m[1] + "index.html" : m[1];
+    if (!fs.existsSync(path.join(OUT, target)))
+      postProblems.push(`${rel}: internal link ${m[1]} resolves to nothing`);
+  }
+  const kb = Buffer.byteLength(html) / 1024;
+  if (kb > 100) postProblems.push(`${rel}: page is ${kb.toFixed(0)}KB; the ceiling is 100KB`);
+}
+if (postProblems.length) {
+  console.error("Post-build checks failed:\n  " + postProblems.join("\n  "));
+  process.exit(1);
+}
 
 console.log(`Built ${entries.length} entries → dist/ (${openEntries.length} open, ${solvedEntries.length} solved)`);
