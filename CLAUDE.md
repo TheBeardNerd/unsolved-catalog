@@ -59,6 +59,12 @@ Numbering: three digits, zero padded, never reused. Next number: 054.
   posed (year or "Antiquity"), added (YYYY-MM-DD), status, teaser.
 - Markdown support is minimal on purpose: paragraphs, ## headings,
   > quotes, bold, italic, links. Write within it.
+- build.js validates every entry (frontmatter, three-digit numbers,
+  slug/filename match, the four sections in order, word count) and
+  fails the build on violations, so a malformed entry cannot deploy.
+- Fonts are self-hosted (src/fonts.css + src/fonts/, latin subset
+  woff2). No page makes any third-party request; netlify.toml pins
+  that with a strict CSP. Keep it that way.
 - src/style.css is the entire visual system. DESIGN.md is normative;
   read it before any visual change. Key laws: the Cabinet Rule (green
   chrome, ivory content, nothing else) and the Stamp Ink Rule (carmine
@@ -108,7 +114,11 @@ Post-launch session, same day: entries 051 (European eel
 spawning), 052 (lightning initiation), 053 (lunar dichotomy)
 written from fresh fact-check research; RSS grew its atom
 self-link and pages a theme-color meta. Issues channel checked:
-empty. Work pushed on branch
+empty. Technical pass, same session: fonts self-hosted (latin
+woff2, five files, ~225KB cached once; Google Fonts requests gone),
+entry validation now fails the build on any format violation, and
+netlify.toml gained a strict no-third-party CSP, nosniff,
+no-referrer, and immutable font caching. Work pushed on branch
 claude/unsolved-catalog-improvements-x6s07p for review into main.
 
 ## Roadmap, in order
