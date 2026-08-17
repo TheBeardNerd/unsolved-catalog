@@ -122,8 +122,8 @@ no-referrer, and immutable font caching. That branch
 (claude/unsolved-catalog-improvements-x6s07p) is merged into main.
 
 Technical-upgrades session, 2026-08-17, on branch
-claude/unsolved-catalog-upgrades-048bha: GitHub Actions CI runs
-node build.js on every push and PR (malformed entries now fail
+claude/unsolved-catalog-upgrades-048bha (merged): GitHub Actions CI
+runs node build.js on every push and PR (malformed entries now fail
 before merge, not at deploy). Build gained post-build checks:
 every internal link must resolve to a built file, and any page
 over 100KB fails the build (the roadmap ceiling, now enforced;
@@ -135,6 +135,24 @@ entries. netlify.toml gained HSTS. Considered and skipped: JSON-LD
 no scripts at all; a search means relaxing that, a decision for a
 dedicated session), OG images (needs PNG generation, which fights
 the zero-dependency rule; still on the someday list).
+
+Second upgrades session, 2026-08-17, branch
+claude/unsolved-catalog-upgrades-k8t7pq: number permalinks (a
+build-generated _redirects file 301s /NNN to the entry; numbers
+are never reused, so /005 is a permanent citeable address; About
+colophon mentions it). catalog.json ships the whole catalog as
+machine-readable data (CC BY 4.0, linked from About). New optional
+frontmatter field `updated: YYYY-MM-DD` for revisions under
+editorial law 3: validated (must not precede added), noted in the
+entry end matter ("Last revised ..."), carried into sitemap
+lastmod and article:modified_time. Two new build-time guards:
+essay links must be https or site-internal, and rendered essays
+are checked for markdown that failed to render (stray ** or
+unclosed links). Considered and skipped: font preloading (CSS is
+inlined so fonts are discovered immediately; no win), extra cache
+headers (Netlify's etag defaults are right for HTML), a fifth
+ledger row for revisions (end matter is quieter; the ledger stays
+as DESIGN.md specifies).
 
 ## Roadmap, in order
 

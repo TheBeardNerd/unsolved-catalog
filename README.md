@@ -41,6 +41,12 @@ teaser: One or two honest sentences.
 3. Run `node build.js` (no install step; there are no dependencies).
 4. Deploy `dist/`.
 
+When you revise an entry because the edge of knowledge moved, add (or bump)
+an `updated: YYYY-MM-DD` line in the frontmatter. The build validates it,
+notes the revision in the entry's end matter, and carries it into the
+sitemap and page metadata. Links in essays must be https or site-internal;
+the build enforces this, and also fails if any markdown fails to render.
+
 When a question is answered: set `status: solved`, add a `solved: YYYY-MM-DD`
 line to the frontmatter, and rewrite the essay to tell the answer and the
 story of how it was found. The build then retires it: it leaves the index,
@@ -67,3 +73,9 @@ The opening collection of 50 shipped on launch day; growth since is slow
 and deliberate. Every push runs the build in GitHub Actions (see
 .github/workflows/build.yml), so a malformed entry, a broken internal
 link, or an overweight page fails CI before it can reach main.
+
+Two stable addresses worth knowing: every entry has a permanent short
+URL at its accession number (`/005` redirects to the full entry, via a
+build-generated `_redirects` file; numbers are never reused, so these
+never break), and the whole catalog is available as machine-readable
+data at `/catalog.json`.
