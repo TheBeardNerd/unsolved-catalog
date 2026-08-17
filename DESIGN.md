@@ -93,7 +93,7 @@ Data: Courier Prime, the typed catalog label. Uppercase, 0.08em tracked, tabular
 
 ## Layout
 
-Single-column, mobile-first, everything constrained to a 46rem inner measure with 1.25rem gutters. Header and footer are full-bleed green bars with constrained inner wrappers. Index: thesis block, then a typed holdings line between brass hairlines, then the drawer (a vertical stack of specimen cards, 1.1rem gap). Entry: green header bar, then the page becomes the ivory card edge to edge; stamp sits absolute top-right of the entry head, h1 clears it with 5.5rem right margin. One breakpoint at 40rem (ledger 2 columns to 4, roomier card padding); body size is fluid via clamp.
+Single-column, mobile-first, everything constrained to a 46rem inner measure with 1.25rem gutters. Header and footer are full-bleed green bars with constrained inner wrappers. Index: thesis block, then a typed ledger head (holdings line, hairline, drawer dividers) between brass hairlines, then the drawer (a vertical stack of specimen cards, 1.1rem gap). Entry: green header bar, then the page becomes the ivory card edge to edge; the stamp floats top-right of the entry head and the title wraps beneath it, so long questions keep the full measure once they clear the stamp. One breakpoint at 40rem (ledger 2 columns to 4, roomier card padding); body size is fluid via clamp.
 
 ## Elevation & Depth
 
@@ -108,8 +108,11 @@ Corners are 3px everywhere a shape has them: cards, panels, the stamp border. Ru
 ### Specimen card (index)
 An ivory card that is one whole link: accession number (Besley 700, carmine), question (Besley 700, balanced), teaser (faded ink), and a typed label line above a top ledger rule. Hover lifts it 3px with the deeper shadow; reduced-motion gets no transform.
 
+### Drawer dividers (index)
+The subject tabs of a card catalog: a fieldset of hidden radios styled as typed Courier labels in sage with tabular counts, the checked divider brass and underlined like the nav, in a row under the holdings line. Selecting one narrows the drawer to that field, pure CSS via `:has()`. Browsers without `:has()` never see the row; print always shows the whole drawer. The default divider is All: the mixed drawer, cosmic beside small, stays the front door.
+
 ### Accession stamp (signature)
-The identity mark. Carmine bordered block, Besley caps + Courier number, rotated -2.5deg, top-right of every entry. It settles into place once on load (0.45s, ease `cubic-bezier(0.16,1,0.3,1)`, from +1.5deg and 114% scale), the site's single authored motion moment; reduced-motion renders it static. A future SOLVED state overstamps it.
+The identity mark. Carmine bordered block, Besley caps + Courier number, rotated -2.5deg, floated top-right of every entry head with the title wrapping beneath it (in source it precedes the h1, so the card reads stamp-first, as a real specimen card does). It settles into place once on load (0.45s, ease `cubic-bezier(0.16,1,0.3,1)`, from +1.5deg and 114% scale), the site's single authored motion moment; reduced-motion renders it static. A future SOLVED state overstamps it.
 
 ### Ledger
 A dl of typed metadata (Field, First posed, Catalogued, Status) between two card rules; values bold ink, OPEN in carmine.

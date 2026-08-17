@@ -173,6 +173,25 @@ JSON Feed (RSS with full content already serves readers), and OG
 images (unchanged: PNG generation fights the zero-dependency
 rule).
 
+UI/UX session, 2026-08-17, branch claude/unsolved-catalog-ui-ux-3ti2fe:
+three upgrades, all inside the constitution (no scripts, no third
+parties). Drawer dividers: the index gained a CSS-only field filter
+styled as card-catalog subject tabs (hidden radios plus :has();
+build-generated rules ship only on the index; browsers without :has()
+never see the row, print always shows the whole drawer; default is
+All, so the mixed drawer stays the front door). The accession stamp
+now floats (in source it precedes the h1), so long titles wrap
+beneath it instead of running narrow for their whole length on
+phones. Entry end matter gained "Previous in the drawer" and the
+drawer now loops: Nº 053's next is Nº 001, so browsing never
+dead-ends. Also text-wrap: pretty on essay, teaser, and panel prose.
+DESIGN.md updated (layout, new Drawer dividers component, stamp).
+Considered and skipped: cross-document view transitions (a second
+entrance animation; DESIGN.md forbids it), a dark variant for entry
+pages (content is ivory card, the Cabinet Rule), per-field index
+pages (would dilute cosmic-beside-small; dividers narrow without
+reordering), and any JS-based search (CSP still allows no scripts).
+
 ## Roadmap, in order
 
 1. Curate and maintain. The opening collection of 50 is complete;
