@@ -65,7 +65,7 @@ function parseEntry(file) {
 
 /* ---------- page shell ---------- */
 
-function page({ title, desc, url, surface, current, content, ogType = "website", published }) {
+function page({ title, desc, url, surface, current, content, ogType = "website", published, modified }) {
   const navLink = (href, label) =>
     `<a href="${href}"${current === label ? ' aria-current="page"' : ""}>${label}</a>`;
   return `<!doctype html>
@@ -81,7 +81,7 @@ function page({ title, desc, url, surface, current, content, ogType = "website",
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:type" content="${ogType}">
 <meta property="og:url" content="${SITE}${url}">
-<meta property="og:site_name" content="UNSOLVED">${published ? `\n<meta property="article:published_time" content="${published}">` : ""}
+<meta property="og:site_name" content="UNSOLVED">${published ? `\n<meta property="article:published_time" content="${published}">` : ""}${modified ? `\n<meta property="article:modified_time" content="${modified}">` : ""}
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="alternate" type="application/rss+xml" title="UNSOLVED" href="/feed.xml">
@@ -130,6 +130,10 @@ function validateEntry(e, file, problems) {
   if (e.slug && e.number && !e.slug.startsWith(e.number + "-")) err(`slug does not start with "${e.number}-"`);
   if (e.slug && path.basename(file, ".md") !== e.slug) err(`filename does not match slug "${e.slug}"`);
   if (e.added && !/^\d{4}-\d{2}-\d{2}$/.test(e.added)) err(`added "${e.added}" is not YYYY-MM-DD`);
+  if (e.updated) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(e.updated)) err(`updated "${e.updated}" is not YYYY-MM-DD`);
+    else if (e.added && e.updated < e.added) err(`updated "${e.updated}" is earlier than added "${e.added}"`);
+  }
   if (e.status && !["open", "solved"].includes(e.status)) err(`status "${e.status}" is neither open nor solved`);
   if (e.status === "solved" && !/^\d{4}-\d{2}-\d{2}$/.test(e.solved || "")) err(`solved entry lacks a solved: YYYY-MM-DD date`);
   const heads = [...e.body.matchAll(/^## (.+)$/gm)].map((m) => m[1].trim());
@@ -138,6 +142,12 @@ function validateEntry(e, file, problems) {
   if (!e.body.trim().split(/\n{2,}/)[0].match(/^[^#>]/)) err(`essay must open with a paragraph before the first section`);
   const words = e.body.split(/\s+/).filter(Boolean).length;
   if (words < 250 || words > 600) err(`essay is ${words} words; the shelf standard is roughly 350-450`);
+  for (const m of e.body.matchAll(/\[[^\]]+\]\(([^)]+)\)/g))
+    if (!m[1].startsWith("https://") && !m[1].startsWith("/"))
+      err(`link target "${m[1]}" is neither https:// nor site-internal`);
+  const rendered = md(e.body);
+  if (/\*\*|\]\(/.test(rendered.replace(/<[^>]+>/g, "")))
+    err(`essay contains markdown that did not render (stray ** or ]( in output)`);
 }
 
 fs.rmSync(OUT, { recursive: true, force: true });
@@ -167,16 +177,23 @@ const fmtDate = (iso) =>
     day: "2-digit", month: "short", year: "numeric", timeZone: "UTC",
   }).toUpperCase();
 
-const lastUpdate = entries.map((e) => e.added).sort().at(-1) || "2026-08-16";
+const touched = (e) => e.updated || e.added;
+const lastUpdate = entries.map(touched).sort().at(-1) || "2026-08-16";
+
+const proseDate = (iso) =>
+  new Date(iso + "T12:00:00Z").toLocaleDateString("en-GB", {
+    day: "numeric", month: "long", year: "numeric", timeZone: "UTC",
+  });
 
 /* entry pages */
 for (const e of entries) {
   const url = `/${e.slug}/`;
   const next = e.status === "open" ? openEntries[openEntries.indexOf(e) + 1] : null;
+  const revised = e.updated ? ` Last revised ${proseDate(e.updated)}.` : "";
   const endLine =
     e.status === "solved"
-      ? `Filed under ${esc(e.field)}. Answered, retired, and kept with honors in <a href="/solved/">the solved room</a>.`
-      : `Filed under ${esc(e.field)}. This entry leaves the catalog only by being answered.`;
+      ? `Filed under ${esc(e.field)}.${revised} Answered, retired, and kept with honors in <a href="/solved/">the solved room</a>.`
+      : `Filed under ${esc(e.field)}.${revised} This entry leaves the catalog only by being answered.`;
   const content = `
 <main class="entry" id="main">
   <article>
@@ -199,7 +216,7 @@ ${md(e.body)}
   fs.mkdirSync(path.join(OUT, e.slug), { recursive: true });
   fs.writeFileSync(
     path.join(OUT, e.slug, "index.html"),
-    page({ title: `${e.title} · UNSOLVED`, desc: e.teaser, url, surface: "card", current: null, content, ogType: "article", published: e.added })
+    page({ title: `${e.title} · UNSOLVED`, desc: e.teaser, url, surface: "card", current: null, content, ogType: "article", published: e.added, modified: e.updated })
   );
 }
 
@@ -300,7 +317,7 @@ const aboutContent = `
     <h2>The money</h2>
     <p>This site costs almost nothing to run. Hosting is free, and the domain costs about as much as one paperback a year. There are no ads, no tracking, no sponsored entries, and nothing for sale. A quiet support link will appear here once the collective is set up. Until then, spend the money on a good book.</p>
     <h2>Colophon</h2>
-    <p>Set in Besley, a revival of the Clarendon style cut in 1845, the same lettering tradition found on natural history museum labels; Literata for reading; Courier Prime for the typed catalog data. Built by hand as plain HTML, generated by a script with zero dependencies. The whole site weighs less than a photograph.</p>
+    <p>Set in Besley, a revival of the Clarendon style cut in 1845, the same lettering tradition found on natural history museum labels; Literata for reading; Courier Prime for the typed catalog data. Built by hand as plain HTML, generated by a script with zero dependencies. The whole site weighs less than a photograph. Every entry has a permanent short address, its accession number: <a href="/005">unsolvedcatalog.org/005</a> will always reach Nº 005. The holdings are also kept as <a href="/catalog.json">plain data</a>, for anyone who wants the catalog as a dataset rather than pages.</p>
     <p><a href="/">Return to the catalog</a></p>
   </div>
 </main>`;
@@ -368,7 +385,7 @@ ${[
   { url: "/", lastmod: lastUpdate },
   { url: "/solved/", lastmod: lastUpdate },
   { url: "/about/", lastmod: lastUpdate },
-  ...entries.map((e) => ({ url: `/${e.slug}/`, lastmod: e.added })),
+  ...entries.map((e) => ({ url: `/${e.slug}/`, lastmod: touched(e) })),
 ]
   .map((p) => `<url><loc>${SITE}${p.url}</loc><lastmod>${p.lastmod}</lastmod></url>`)
   .join("\n")}
@@ -378,11 +395,49 @@ fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemap);
 
 fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
+/* number permalinks: /NNN is the permanent citeable address of an entry.
+   Numbers are never reused, so these redirects hold even if a slug is
+   ever reworded. Netlify reads _redirects from the publish directory. */
+fs.writeFileSync(
+  path.join(OUT, "_redirects"),
+  entries.map((e) => `/${e.number} /${e.slug}/ 301`).join("\n") + "\n"
+);
+
+/* catalog.json: the holdings, machine-readable, for anyone who wants
+   the catalog as data rather than pages */
+fs.writeFileSync(
+  path.join(OUT, "catalog.json"),
+  JSON.stringify(
+    {
+      title: "UNSOLVED",
+      description: "A catalog of open questions.",
+      url: SITE,
+      license: "CC BY 4.0",
+      updated: lastUpdate,
+      entries: entries.map((e) => ({
+        number: e.number,
+        title: e.title,
+        field: e.field,
+        posed: e.posed,
+        added: e.added,
+        ...(e.updated ? { revised: e.updated } : {}),
+        status: e.status,
+        ...(e.solved ? { solved: e.solved } : {}),
+        teaser: e.teaser,
+        url: `${SITE}/${e.slug}/`,
+      })),
+    },
+    null,
+    1
+  ) + "\n"
+);
+
 /* ---------- post-build checks: links resolve, pages stay light ----------
    Every internal href in the built site must point at a built file, and
    no page may cross the 100KB line. Violations fail the build. */
 
 const postProblems = [];
+const redirected = new Set(entries.map((e) => `/${e.number}`));
 const htmlFiles = [];
 (function walk(dir) {
   for (const f of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -395,6 +450,7 @@ for (const file of htmlFiles) {
   const html = fs.readFileSync(file, "utf8");
   const rel = path.relative(OUT, file);
   for (const m of html.matchAll(/href="(\/[^"#?]*)/g)) {
+    if (redirected.has(m[1])) continue;
     const target = m[1].endsWith("/") ? m[1] + "index.html" : m[1];
     if (!fs.existsSync(path.join(OUT, target)))
       postProblems.push(`${rel}: internal link ${m[1]} resolves to nothing`);
