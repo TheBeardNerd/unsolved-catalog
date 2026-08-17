@@ -65,7 +65,7 @@ function parseEntry(file) {
 
 /* ---------- page shell ---------- */
 
-function page({ title, desc, url, surface, current, content, ogType = "website", published, modified }) {
+function page({ title, desc, url, surface, current, content, ogType = "website", published, modified, extraCss = "" }) {
   const navLink = (href, label) =>
     `<a href="${href}"${current === label ? ' aria-current="page"' : ""}>${label}</a>`;
   return `<!doctype html>
@@ -86,7 +86,7 @@ function page({ title, desc, url, surface, current, content, ogType = "website",
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="alternate" type="application/rss+xml" title="UNSOLVED" href="/feed.xml">
 <style>
-${CSS}
+${CSS}${extraCss}
 </style>
 </head>
 <body${surface === "card" ? ' class="card-surface"' : ""}>
@@ -183,6 +183,8 @@ if (problems.length) {
 const openEntries = entries.filter((e) => e.status === "open");
 const solvedEntries = entries.filter((e) => e.status === "solved");
 
+const fieldSlug = (f) => f.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
 const fmtDate = (iso) =>
   new Date(iso + "T12:00:00Z").toLocaleDateString("en-GB", {
     day: "2-digit", month: "short", year: "numeric", timeZone: "UTC",
@@ -199,7 +201,12 @@ const proseDate = (iso) =>
 /* entry pages */
 for (const e of entries) {
   const url = `/${e.slug}/`;
-  const next = e.status === "open" ? openEntries[openEntries.indexOf(e) + 1] : null;
+  /* The drawer is circular: the last card's next is the first, and the
+     first card's previous is the last, so browsing never dead-ends. */
+  const idx = openEntries.indexOf(e);
+  const looped = e.status === "open" && openEntries.length > 1;
+  const next = looped ? openEntries[(idx + 1) % openEntries.length] : null;
+  const prev = looped ? openEntries[(idx - 1 + openEntries.length) % openEntries.length] : null;
   const revised = e.updated ? ` Last revised ${proseDate(e.updated)}.` : "";
   const endLine =
     e.status === "solved"
@@ -209,8 +216,8 @@ for (const e of entries) {
 <main class="entry" id="main">
   <article>
     <div class="entry-head">
-      <h1>${esc(e.title)}</h1>
       <p class="stamp">UNSOLVED<span class="no">Nº ${e.number}</span>${e.status.toUpperCase()}</p>
+      <h1>${esc(e.title)}</h1>
     </div>
     <dl class="ledger">
       <div><dt>Field</dt><dd><b>${esc(e.field)}</b></dd></div>
@@ -221,7 +228,7 @@ for (const e of entries) {
     <div class="essay">
 ${md(e.body)}
     </div>
-    <p class="end-matter">${endLine}<br>${next ? `Next in the drawer: <a href="/${next.slug}/">Nº ${next.number} · ${esc(next.title)}</a><br>` : ""}<a href="/">Return to the catalog</a></p>
+    <p class="end-matter">${endLine}<br>${next ? `Next in the drawer: <a href="/${next.slug}/">Nº ${next.number} · ${esc(next.title)}</a><br>` : ""}${prev ? `Previous in the drawer: <a href="/${prev.slug}/">Nº ${prev.number} · ${esc(prev.title)}</a><br>` : ""}<a href="/">Return to the catalog</a></p>
   </article>
 </main>`;
   fs.mkdirSync(path.join(OUT, e.slug), { recursive: true });
@@ -234,7 +241,7 @@ ${md(e.body)}
 /* index */
 const cards = openEntries
   .map(
-    (e) => `    <li><a class="specimen" href="/${e.slug}/">
+    (e) => `    <li data-field="${fieldSlug(e.field)}"><a class="specimen" href="/${e.slug}/">
       <span class="acc-no">Nº ${e.number}</span>
       <h2>${esc(e.title)}</h2>
       <p class="teaser">${esc(e.teaser)}</p>
@@ -243,6 +250,27 @@ const cards = openEntries
   )
   .join("\n");
 
+/* Drawer dividers: subject tabs for the drawer, pure CSS. Hidden radios
+   plus :has() narrow the list; browsers without :has() never see the row
+   (the fieldset stays display:none), and the filter rules are screen-only
+   so print always gets the whole drawer. */
+const fields = [...new Set(openEntries.map((e) => e.field))].sort();
+const dividers = `  <fieldset class="dividers">
+    <legend class="visually-hidden">Show one field</legend>
+    <input class="visually-hidden" type="radio" name="field" id="d-all" checked>
+    <label for="d-all">All<span class="count">${openEntries.length}</span></label>
+${fields
+  .map((f) => `    <input class="visually-hidden" type="radio" name="field" id="d-${fieldSlug(f)}">
+    <label for="d-${fieldSlug(f)}">${esc(f)}<span class="count">${openEntries.filter((e) => e.field === f).length}</span></label>`)
+  .join("\n")}
+  </fieldset>`;
+const dividerCss =
+  "\n@media screen {\n" +
+  fields
+    .map((f) => `body:has(#d-${fieldSlug(f)}:checked) .drawer > li:not([data-field="${fieldSlug(f)}"]) { display: none; }`)
+    .join("\n") +
+  "\n}";
+
 const indexContent = `
 <main class="cabinet" id="main">
   <section class="thesis">
@@ -250,6 +278,7 @@ const indexContent = `
     <p>Human knowledge has a map. This is a map of the territory beyond it: open questions, each recorded with what we know, where knowing stops, and what an answer would look like.</p>
     <p class="holdings">Holdings: ${openEntries.length} open questions · Solved: ${solvedEntries.length} · Est. 2026</p>
   </section>
+${dividers}
   <ul class="drawer">
 ${cards}
   </ul>
@@ -261,6 +290,7 @@ fs.writeFileSync(
     title: "UNSOLVED · A catalog of open questions",
     desc: "A museum of what nobody knows. Open questions from every field, each recorded with what we know, where knowing stops, and what an answer would look like.",
     url: "/", surface: "case", current: "Catalog", content: indexContent,
+    extraCss: dividerCss,
   })
 );
 
