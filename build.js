@@ -129,7 +129,9 @@ function validateEntry(e, file, problems) {
   if (e.number && !/^\d{3}$/.test(e.number)) err(`number "${e.number}" is not three digits`);
   if (e.slug && e.number && !e.slug.startsWith(e.number + "-")) err(`slug does not start with "${e.number}-"`);
   if (e.slug && path.basename(file, ".md") !== e.slug) err(`filename does not match slug "${e.slug}"`);
+  if (e.posed && !/^(\d{4}|Antiquity)$/.test(e.posed)) err(`posed "${e.posed}" is neither a four-digit year nor "Antiquity"`);
   if (e.added && !/^\d{4}-\d{2}-\d{2}$/.test(e.added)) err(`added "${e.added}" is not YYYY-MM-DD`);
+  if (e.teaser && e.teaser.length > 240) err(`teaser is ${e.teaser.length} characters; the ceiling is 240 (it doubles as the meta description)`);
   if (e.updated) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(e.updated)) err(`updated "${e.updated}" is not YYYY-MM-DD`);
     else if (e.added && e.updated < e.added) err(`updated "${e.updated}" is earlier than added "${e.added}"`);
@@ -164,6 +166,15 @@ const entries = files
   .sort((a, b) => a.number.localeCompare(b.number));
 const dupes = entries.map((e) => e.number).filter((n, i, a) => a.indexOf(n) !== i);
 for (const n of new Set(dupes)) problems.push(`number ${n} is used by more than one entry; numbers are never reused`);
+/* Accession numbers must run 001..N with no gaps: numbers are permanent
+   citeable addresses, so a typo'd number would mint a wrong citation. */
+entries.forEach((e, i) => {
+  const expect = String(i + 1).padStart(3, "0");
+  if (e.number !== expect && !dupes.length)
+    problems.push(`number ${e.number} breaks the sequence; expected ${expect} (accession numbers are contiguous, no gaps)`);
+});
+const dupTitles = entries.map((e) => e.title).filter((t, i, a) => a.indexOf(t) !== i);
+for (const t of new Set(dupTitles)) problems.push(`title "${t}" is used by more than one entry`);
 if (problems.length) {
   console.error("Catalog validation failed:\n  " + problems.join("\n  "));
   process.exit(1);
@@ -356,6 +367,7 @@ const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <atom:link href="${SITE}/feed.xml" rel="self" type="application/rss+xml"/>
 <description>A catalog of open questions.</description>
 <language>en</language>
+<lastBuildDate>${new Date(lastUpdate + "T12:00:00Z").toUTCString()}</lastBuildDate>
 ${[...entries].reverse().map((e) => `<item>
 <title>${esc(`Nº ${e.number} — ${e.title}`)}</title>
 <link>${SITE}/${e.slug}/</link>

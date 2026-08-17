@@ -154,6 +154,25 @@ headers (Netlify's etag defaults are right for HTML), a fifth
 ledger row for revisions (end matter is quieter; the ledger stays
 as DESIGN.md specifies).
 
+Third upgrades session, 2026-08-17, branch
+claude/unsolved-catalog-upgrades-n55f39: catalog.json and feed.xml
+now ship a CORS header (Access-Control-Allow-Origin: *) so the
+catalog-as-data promise works from other origins in a browser.
+HSTS gained includeSubDomains. RSS gained lastBuildDate (derived
+from the newest entry date; the build stays deterministic). Four
+new validation guards: posed must be a four-digit year or
+"Antiquity", teasers are capped at 240 characters (they double as
+meta descriptions), accession numbers must run 001..N with no gaps
+(a typo'd number would mint a wrong permanent citation), and
+duplicate titles fail the build. CI now builds twice and diffs the
+output, so nondeterminism cannot creep in unnoticed. Issues
+channel checked: empty. Considered and skipped: a link-rot
+watchdog (essays currently cite zero external links; nothing to
+watch), an XSLT-styled feed page (Chrome is removing XSLT), a
+JSON Feed (RSS with full content already serves readers), and OG
+images (unchanged: PNG generation fights the zero-dependency
+rule).
+
 ## Roadmap, in order
 
 1. Curate and maintain. The opening collection of 50 is complete;

@@ -11,3 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: node build.js
+      # The build must be a pure function of the repo: same input, same
+      # site, byte for byte. Build twice and compare, so nondeterminism
+      # (a stray timestamp, an unsorted directory read) fails here.
+      - run: |
+          mv dist dist-first
+          node build.js
+          diff -r dist-first dist
