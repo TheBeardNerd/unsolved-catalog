@@ -212,7 +212,12 @@ where the shadow-borne edges are stripped. DESIGN.md updated
 skipped: animating the overstamp as a second strike (DESIGN.md
 allows one motion moment), a :target highlight animation (same),
 and tap-highlight suppression (reduced-motion users would lose
-their only tap feedback).
+their only tap feedback). Same session: fixed the header nav on
+phones. It wrapped mid-list (ABOUT alone on a ragged second line);
+the nav is now a flex unit that either shares the wordmark's
+baseline row or drops below it whole, flush left, with edge tap
+padding cancelled so link text aligns with the measure. Verified
+at 320/360/390/640/1280.
 
 ## Roadmap, in order
 

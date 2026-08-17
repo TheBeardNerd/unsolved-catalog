@@ -120,7 +120,7 @@ The SOLVED state overstamps it: the original stamp is kept (a card's history is 
 A dl of typed metadata (Field, First posed, Catalogued, Status) between two card rules; values bold ink, OPEN in carmine.
 
 ### Navigation
-Courier caps in brass on the green bar, 0.55rem vertical padding for tap targets, current page underlined in brass.
+Courier caps in brass on the green bar, 0.55rem vertical padding for tap targets, current page underlined in brass. The header wraps as a unit: wordmark and nav share one baseline row where they fit; where they don't, the whole nav drops below the wordmark as its own flush-left row, never wrapping mid-list. The links' 0.2rem tap padding is cancelled at the list's edges (negative margins) so link text sits flush with the measure.
 
 ### Browser surfaces
 Selection is carmine with ivory text; caret carmine; scrollbar brass-on-deep-green; focus rings 2px, brass on green surfaces and carmine on ivory. In forced-colors mode (card depth lives in shadows, which it strips) specimen cards and panels gain a 1px CanvasText border so the drawer keeps its structure.
