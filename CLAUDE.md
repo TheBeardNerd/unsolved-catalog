@@ -118,8 +118,23 @@ empty. Technical pass, same session: fonts self-hosted (latin
 woff2, five files, ~225KB cached once; Google Fonts requests gone),
 entry validation now fails the build on any format violation, and
 netlify.toml gained a strict no-third-party CSP, nosniff,
-no-referrer, and immutable font caching. Work pushed on branch
-claude/unsolved-catalog-improvements-x6s07p for review into main.
+no-referrer, and immutable font caching. That branch
+(claude/unsolved-catalog-improvements-x6s07p) is merged into main.
+
+Technical-upgrades session, 2026-08-17, on branch
+claude/unsolved-catalog-upgrades-048bha: GitHub Actions CI runs
+node build.js on every push and PR (malformed entries now fail
+before merge, not at deploy). Build gained post-build checks:
+every internal link must resolve to a built file, and any page
+over 100KB fails the build (the roadmap ceiling, now enforced;
+largest page is ~38KB). RSS items carry the full essay via
+content:encoded, so feed readers show whole entries. Page shell
+gained og:site_name, twitter:card, and article:published_time on
+entries. netlify.toml gained HSTS. Considered and skipped: JSON-LD
+(CSP purity, marginal benefit), client-side search (the CSP allows
+no scripts at all; a search means relaxing that, a decision for a
+dedicated session), OG images (needs PNG generation, which fights
+the zero-dependency rule; still on the someday list).
 
 ## Roadmap, in order
 

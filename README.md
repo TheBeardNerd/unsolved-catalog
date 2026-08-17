@@ -63,4 +63,7 @@ and ask it to read README.md and DESIGN.md first. Standing editorial rules
 live on the About page: honest hedging, entries leave only by being solved,
 no hype, no ads, no tracking.
 
-Launch was 7 entries; the target for the full opening collection is 50.
+The opening collection of 50 shipped on launch day; growth since is slow
+and deliberate. Every push runs the build in GitHub Actions (see
+.github/workflows/build.yml), so a malformed entry, a broken internal
+link, or an overweight page fails CI before it can reach main.

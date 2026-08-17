@@ -1,0 +1,13 @@
+# UNSOLVED · CI
+# Runs the zero-dependency build on every push and pull request, so a
+# malformed entry fails here, before it can reach main or the deploy.
+name: Build
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node build.js
